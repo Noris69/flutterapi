@@ -65,6 +65,8 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                               'title': article.title,
                               'description': article.description,
                               'urlToImage': article.imageUrl,
+                              'author': article.author, // Pass the author's name
+                              'publishedAt': article.publishedAt, // Pass the publication date
                             }),
                           ),
                         ).then((value) {

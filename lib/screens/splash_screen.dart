@@ -1,4 +1,3 @@
-// splash_screen.dart
 import 'package:flutter/material.dart';
 import 'package:untitled6/screens/intro_screen.dart';
 
@@ -8,11 +7,20 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  double _opacity = 0.0; // Initial opacity value
+
   @override
   void initState() {
     super.initState();
+    // Start animation after a delay
+    Future.delayed(Duration(seconds: 1), () {
+      setState(() {
+        _opacity = 1.0; // Update opacity to fully visible
+      });
+    });
+    // Navigate to the next screen after a delay
     Future.delayed(
-      Duration(seconds: 3), // Change the duration as needed
+      Duration(seconds: 3),
           () {
         Navigator.pushReplacement(
           context,
@@ -27,13 +35,16 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, // Set background color to white
+      backgroundColor: Colors.white,
       body: Center(
-        // Use an Image widget with AssetImage to display the image
-        child: Image.asset(
-          'assets/splash.png', // Path to your splash image
-          width: 200, // Adjust width and height as needed
-          height: 200,
+        child: AnimatedOpacity(
+          duration: Duration(seconds: 5), // Duration of the animation
+          opacity: _opacity, // Opacity value controlled by the animation
+          child: Image.asset(
+            'assets/splash.png',
+            width: 200,
+            height: 200,
+          ),
         ),
       ),
     );

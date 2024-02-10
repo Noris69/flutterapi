@@ -1,4 +1,3 @@
-// database_helper.dart
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -6,11 +5,15 @@ class Article {
   final String title;
   final String description;
   final String imageUrl;
+  final String publishedAt; // New field
+  final String author; // New field
 
   Article({
     required this.title,
     required this.description,
     required this.imageUrl,
+    required this.publishedAt,
+    required this.author, // Added the author field
   });
 
   Map<String, dynamic> toMap() {
@@ -18,6 +21,8 @@ class Article {
       'title': title,
       'description': description,
       'imageUrl': imageUrl,
+      'publishedAt': publishedAt,
+      'author': author, // Added the author field
     };
   }
 }
@@ -32,6 +37,8 @@ class DatabaseHelper {
   static final columnTitle = 'title';
   static final columnDescription = 'description';
   static final columnImageUrl = 'imageUrl';
+  static final columnPublishedAt = 'publishedAt';
+  static final columnAuthor = 'author'; // New field
 
   DatabaseHelper._privateConstructor();
   static final DatabaseHelper instance = DatabaseHelper._privateConstructor();
@@ -51,9 +58,12 @@ class DatabaseHelper {
   Future _onCreate(Database db, int version) async {
     await db.execute('''
       CREATE TABLE $table (
-        $columnTitle TEXT PRIMARY KEY,
+        $columnId INTEGER PRIMARY KEY AUTOINCREMENT,
+        $columnTitle TEXT NOT NULL,
         $columnDescription TEXT NOT NULL,
-        $columnImageUrl TEXT NOT NULL
+        $columnImageUrl TEXT NOT NULL,
+        $columnPublishedAt TEXT NOT NULL,
+        $columnAuthor TEXT NOT NULL 
       )
     ''');
   }
@@ -71,6 +81,8 @@ class DatabaseHelper {
         title: maps[i][columnTitle],
         description: maps[i][columnDescription],
         imageUrl: maps[i][columnImageUrl],
+        publishedAt: maps[i][columnPublishedAt],
+        author: maps[i][columnAuthor], // Retrieve the author field
       );
     });
   }
@@ -80,7 +92,7 @@ class DatabaseHelper {
     await db.delete(table, where: '$columnTitle = ?', whereArgs: [title]);
   }
 
-  // Nouvelle méthode pour vérifier si un article est présent dans les favoris
+  // New method to check if an article is in favorites
   Future<bool> isArticleInFavorites(String title) async {
     Database db = await instance.database;
     List<Map<String, dynamic>> maps = await db.query(

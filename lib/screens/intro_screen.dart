@@ -1,6 +1,6 @@
-// intro_screen.dart
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled6/screens/home_screen.dart';
 
 class IntroScreen extends StatefulWidget {
@@ -9,7 +9,27 @@ class IntroScreen extends StatefulWidget {
 }
 
 class _IntroScreenState extends State<IntroScreen> {
-  final List<String> introImages = ['image1.jpg', 'image2.jpg', 'image3.jpg'];
+  final List<String> introImages = ['image1.png', 'image2.png', 'image3.png'];
+
+  @override
+  void initState() {
+    super.initState();
+    _checkFirstLaunch();
+  }
+
+  void _checkFirstLaunch() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isFirstLaunch = prefs.getBool('firstLaunch') ?? true;
+    if (!isFirstLaunch) {
+      // Not the first launch, navigate to home screen directly
+      Navigator.pushReplacementNamed(context, '/home');
+    }
+  }
+
+  void _setFirstLaunchFlag() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('firstLaunch', false);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +47,12 @@ class _IntroScreenState extends State<IntroScreen> {
           enlargeCenterPage: false,
           onPageChanged: (index, reason) {
             if (index == introImages.length - 1) {
-              // Last intro screen, navigate to home screen
-              Navigator.pushReplacementNamed(context, '/home');
+              // Last intro screen, set first launch flag and navigate to home screen
+              _setFirstLaunchFlag();
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => HomeScreen()),
+              );
             }
           },
         ),

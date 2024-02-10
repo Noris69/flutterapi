@@ -48,11 +48,13 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
             ),
             SizedBox(height: 8.0),
             Text(
-              widget.article['author'] ?? '',
+              'Author: ${widget.article['author'] ?? ''}', // Display author
               style: TextStyle(fontSize: 14.0, fontStyle: FontStyle.italic),
             ),
             SizedBox(height: 8.0),
-            Text(widget.article['description'] ?? ''),
+            Text(
+              widget.article['description'] ?? '',
+            ),
             SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () async {
@@ -67,6 +69,8 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
                       title: widget.article['title'] ?? '',
                       description: widget.article['description'] ?? '',
                       imageUrl: widget.article['urlToImage'] ?? '',
+                      publishedAt: widget.article['publishedAt'] ?? '', // Include publishedAt
+                      author: widget.article['author'] ?? '', // Include author
                     ),
                   );
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -79,7 +83,7 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
               },
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.resolveWith<Color>((states) {
-                  return isFavorite ? Colors.red : Colors.grey; // Couleur du bouton en fonction de l'état de favoris
+                  return isFavorite ? Colors.red : Colors.grey; // Button color based on favorite state
                 }),
               ),
               child: Text(isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris', style: TextStyle(color: Colors.white)),
