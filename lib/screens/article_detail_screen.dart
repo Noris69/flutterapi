@@ -38,7 +38,10 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.network(widget.article['urlToImage'] ?? ''),
+            Visibility(
+              visible: widget.article['urlToImage'] != null,
+              child: Image.network(widget.article['urlToImage'] ?? ''),
+            ),
             SizedBox(height: 16.0),
             Text(
               widget.article['title'] ?? '',

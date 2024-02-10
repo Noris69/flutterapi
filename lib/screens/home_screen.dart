@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:untitled6/screens/article_detail_screen.dart';
-import 'package:untitled6/components/news_list.dart';
-import 'package:untitled6/screens/favorites_screen.dart'; // Importez le nouveau fichier
+import 'package:untitled6/screens/favorites_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -34,12 +33,21 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('News App'),
+        title: Row(
+          children: [
+            Image.asset(
+              'assets/logo.jpg',
+              width: 40, // Ajustez la largeur selon votre besoin
+              height: 40, // Ajustez la hauteur selon votre besoin
+            ),
+            SizedBox(width: 8), // Ajoutez un espace entre le logo et le titre
+            Text('NEWS DAILY'),
+          ],
+        ),
         actions: [
           IconButton(
             icon: Icon(Icons.favorite),
@@ -52,14 +60,32 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      body: NewsList(
-        newsData: newsData,
-        onTap: (index) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ArticleDetailScreen(
-                article: newsData[index],
+      body: ListView.builder(
+        itemCount: newsData.length,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Card(
+              child: ListTile(
+                title: Text(
+                  newsData[index]['title'] ?? '',
+                  style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                ),
+                subtitle: Text(
+                  newsData[index]['description'] ?? '',
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ArticleDetailScreen(
+                        article: newsData[index],
+                      ),
+                    ),
+                  );
+                },
               ),
             ),
           );

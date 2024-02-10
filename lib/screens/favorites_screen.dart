@@ -45,36 +45,46 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 itemCount: favorites.length,
                 itemBuilder: (context, index) {
                   final article = favorites[index];
-                  return ListTile(
-                    title: Text(article.title),
-                    subtitle: Text(article.description),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ArticleDetailScreen(article: {
-                            'title': article.title,
-                            'description': article.description,
-                            'urlToImage': article.imageUrl,
-                          }),
-                        ),
-                      ).then((value) {
-                        setState(() {
-                          _favoritesFuture = DatabaseHelper.instance.getAllFavorites();
-                        });
-                      });
-                    },
-                    trailing: IconButton(
-                      icon: Icon(Icons.favorite),
-                      onPressed: () async {
-                        await DatabaseHelper.instance.delete(article.title);
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text('Article retiré des favoris'),
-                        ));
-                        setState(() {
-                          _favoritesFuture = DatabaseHelper.instance.getAllFavorites();
+                  return Card(
+                    margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                    child: ListTile(
+                      title: Text(
+                        article.title,
+                        style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: Text(
+                        article.description,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ArticleDetailScreen(article: {
+                              'title': article.title,
+                              'description': article.description,
+                              'urlToImage': article.imageUrl,
+                            }),
+                          ),
+                        ).then((value) {
+                          setState(() {
+                            _favoritesFuture = DatabaseHelper.instance.getAllFavorites();
+                          });
                         });
                       },
+                      trailing: IconButton(
+                        icon: Icon(Icons.favorite),
+                        onPressed: () async {
+                          await DatabaseHelper.instance.delete(article.title);
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text('Article retiré des favoris'),
+                          ));
+                          setState(() {
+                            _favoritesFuture = DatabaseHelper.instance.getAllFavorites();
+                          });
+                        },
+                      ),
                     ),
                   );
                 },
