@@ -1,4 +1,3 @@
-// article_detail_screen.dart
 import 'package:flutter/material.dart';
 import 'package:untitled6/database/database_helper.dart';
 
@@ -78,7 +77,12 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
                   isFavorite = !isFavorite;
                 });
               },
-              child: Text(isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris'),
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.resolveWith<Color>((states) {
+                  return isFavorite ? Colors.red : Colors.grey; // Couleur du bouton en fonction de l'état de favoris
+                }),
+              ),
+              child: Text(isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris', style: TextStyle(color: Colors.white)),
             ),
           ],
         ),

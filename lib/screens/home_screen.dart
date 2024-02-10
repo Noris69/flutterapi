@@ -39,13 +39,15 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: Row(
           children: [
-            Image.asset(
-              'assets/logo.jpg',
-              width: 40, // Ajustez la largeur selon votre besoin
-              height: 40, // Ajustez la hauteur selon votre besoin
-            ),
-            SizedBox(width: 8), // Ajoutez un espace entre le logo et le titre
-            Text('NEWS DAILY'),
+        Text(
+          'NEWS DAILY',
+          style: TextStyle(
+            fontSize: 20.0, // Adjust font size as needed
+            fontWeight: FontWeight.bold,
+            fontStyle: FontStyle.italic, // Add italic style
+            color: Colors.red, // Change text color
+          ),
+        ),
           ],
         ),
         actions: [
