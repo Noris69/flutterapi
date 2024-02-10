@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:untitled6/screens/article_detail_screen.dart';
 import 'package:untitled6/components/news_list.dart';
+import 'package:untitled6/screens/favorites_screen.dart'; // Importez le nouveau fichier
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -39,6 +40,17 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('News App'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.favorite),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => FavoritesScreen()), // Naviguer vers la page des favoris
+              );
+            },
+          ),
+        ],
       ),
       body: NewsList(
         newsData: newsData,

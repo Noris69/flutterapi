@@ -1,10 +1,31 @@
 // article_detail_screen.dart
 import 'package:flutter/material.dart';
+import 'package:untitled6/database/database_helper.dart';
 
-class ArticleDetailScreen extends StatelessWidget {
+class ArticleDetailScreen extends StatefulWidget {
   final dynamic article;
 
   ArticleDetailScreen({required this.article});
+
+  @override
+  _ArticleDetailScreenState createState() => _ArticleDetailScreenState();
+}
+
+class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
+  bool isFavorite = false;
+
+  @override
+  void initState() {
+    super.initState();
+    checkFavorite();
+  }
+
+  void checkFavorite() async {
+    bool favorite = await DatabaseHelper.instance.isArticleInFavorites(widget.article['title']);
+    setState(() {
+      isFavorite = favorite;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,19 +38,45 @@ class ArticleDetailScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.network(article['urlToImage'] ?? ''),
+            Image.network(widget.article['urlToImage'] ?? ''),
             SizedBox(height: 16.0),
             Text(
-              article['title'] ?? '',
+              widget.article['title'] ?? '',
               style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 8.0),
             Text(
-              article['author'] ?? '',
+              widget.article['author'] ?? '',
               style: TextStyle(fontSize: 14.0, fontStyle: FontStyle.italic),
             ),
             SizedBox(height: 8.0),
-            Text(article['content'] ?? ''),
+            Text(widget.article['description'] ?? ''),
+            SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed: () async {
+                if (isFavorite) {
+                  await DatabaseHelper.instance.delete(widget.article['title']);
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text('Article retiré des favoris'),
+                  ));
+                } else {
+                  await DatabaseHelper.instance.insert(
+                    Article(
+                      title: widget.article['title'] ?? '',
+                      description: widget.article['description'] ?? '',
+                      imageUrl: widget.article['urlToImage'] ?? '',
+                    ),
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text('Article ajouté aux favoris'),
+                  ));
+                }
+                setState(() {
+                  isFavorite = !isFavorite;
+                });
+              },
+              child: Text(isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris'),
+            ),
           ],
         ),
       ),

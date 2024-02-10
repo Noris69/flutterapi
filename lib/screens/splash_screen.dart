@@ -12,7 +12,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Future.delayed(
-      Duration(seconds: 3),
+      Duration(seconds: 3), // Change the duration as needed
           () {
         Navigator.pushReplacement(
           context,
@@ -27,8 +27,14 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white, // Set background color to white
       body: Center(
-        child: FlutterLogo(size: 200),
+        // Use an Image widget with AssetImage to display the image
+        child: Image.asset(
+          'assets/splash.png', // Path to your splash image
+          width: 200, // Adjust width and height as needed
+          height: 200,
+        ),
       ),
     );
   }
