@@ -17,6 +17,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/home': (context) => HomeScreen(),
       },
+      debugShowCheckedModeBanner: false, // Désactiver l'icône de débogage
+
     );
   }
 }
