@@ -74,7 +74,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                         });
                       },
                       trailing: IconButton(
-                        icon: Icon(Icons.favorite),
+                        icon: Icon(Icons.favorite , color: Colors.red),
                         onPressed: () async {
                           await DatabaseHelper.instance.delete(article.title);
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
