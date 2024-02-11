@@ -1,4 +1,3 @@
-// favorites_screen.dart
 import 'package:flutter/material.dart';
 import 'package:untitled6/database/database_helper.dart';
 import 'package:untitled6/screens/article_detail_screen.dart';
@@ -14,7 +13,13 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
   @override
   void initState() {
     super.initState();
-    _favoritesFuture = DatabaseHelper.instance.getAllFavorites();
+    _loadFavorites();
+  }
+
+  Future<void> _loadFavorites() async {
+    setState(() {
+      _favoritesFuture = DatabaseHelper.instance.getAllFavorites();
+    });
   }
 
   @override
@@ -70,9 +75,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                             }),
                           ),
                         ).then((value) {
-                          setState(() {
-                            _favoritesFuture = DatabaseHelper.instance.getAllFavorites();
-                          });
+                          _loadFavorites(); // Reload favorites after returning from detail screen
                         });
                       },
                       trailing: IconButton(
@@ -82,9 +85,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             content: Text('Article retiré des favoris'),
                           ));
-                          setState(() {
-                            _favoritesFuture = DatabaseHelper.instance.getAllFavorites();
-                          });
+                          _loadFavorites(); // Reload favorites after removing from favorites
                         },
                       ),
                     ),

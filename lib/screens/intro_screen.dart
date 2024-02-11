@@ -9,7 +9,7 @@ class IntroScreen extends StatefulWidget {
 }
 
 class _IntroScreenState extends State<IntroScreen> {
-  final List<String> introImages = ['image1.png', 'image2.png', 'image3.png'];
+  final List<String> introImages = ['image1.png', 'image2.png', 'image3.png',''];
 
   @override
   void initState() {
@@ -43,10 +43,10 @@ class _IntroScreenState extends State<IntroScreen> {
         }).toList(),
         options: CarouselOptions(
           height: MediaQuery.of(context).size.height,
-          viewportFraction: 1.0,
+          viewportFraction: 10.0,
           enlargeCenterPage: false,
           onPageChanged: (index, reason) {
-            if (index == introImages.length - 1) {
+            if (index == introImages.length -1) {
               // Last intro screen, set first launch flag and navigate to home screen
               _setFirstLaunchFlag();
               Navigator.pushReplacement(
